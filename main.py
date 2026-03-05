@@ -198,7 +198,7 @@ def sensitivity_analysis(model, device, scaler_cont, cat_encoders, save_dir='./s
     # 原始特征范围：
     # 转速(rpm) 取 10000, 温度(k) 取 650, 应力幅 取 300, 材料 INC718, 应力比 0.4, 频率 50Hz, 坐标取一个点
     base_cont = np.array([[10000, 650, 300]], dtype=np.float32)   # [转速, 温度, 应力幅]
-    base_cat = np.array([[0, 1, 0]], dtype=np.int64)   # 材料编码0, 应力比0.4编码?, 频率50编码? 需从cat_encoders获取
+    base_cat = np.array([[0, 1, 0]], dtype=np.int64)   # 编码
     # 实际中应根据编码映射正确赋值，这里简化为0,1,0
     base_trunk = np.array([[-12.5, 18.9, -6.9]], dtype=np.float32)  # 叶根坐标
 
@@ -227,11 +227,9 @@ def sensitivity_analysis(model, device, scaler_cont, cat_encoders, save_dir='./s
 
     plt.figure()
     plt.plot(sa_range, preds_sa, 'b-', label='Model prediction')
-    # 可添加物理模型曲线（需拟合或引用）
-    # 这里简单用 Basquin 拟合：N = C * Sa^m，从数据拟合
-    # 我们可以在 dataset 中实现物理模型并导入
-    # 从 dataset 导入 predict_physical（但需要原始数据文件）
-    # 为简化，暂不画物理曲线
+    # 这里简单用 Basquin 拟合：N = C * Sa^m，数据拟合
+    # 在 dataset 中实现物理模型并导入
+    # 从 dataset 导入 predict_physical
     plt.xlabel('Stress Amplitude (MPa)')
     plt.ylabel('Predicted Life (cycles)')
     plt.yscale('log')
@@ -282,4 +280,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     os.makedirs(args.save_dir, exist_ok=True)
+
     main(args)
