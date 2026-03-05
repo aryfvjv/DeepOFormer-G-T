@@ -4,7 +4,7 @@
 # @author:20402
 # @date:2026/3/4
 # @version:1.0
-# @desc:
+# @desc:工具函数
 import numpy as np
 import torch
 from sklearn.metrics import  r2_score,mean_absolute_error,mean_squared_error
@@ -42,8 +42,7 @@ def evaluate_model(model,loader,device,return_pred=False):
     preds = np.concatenate(all_preds,axis=0).flatten()
     targets = np.concatenate(all_targets,axis=0).flatten()
 
-    # 如果目标是log形式，转换回原始值计算误差
-    # 这里假设训练时使用了log，因此preds和targets都是log值
+    # 训练时使用了log，因此preds和targets都是log值
     # 计算原始值的相对误差时，需要exp
     preds_orig = np.exp(preds)
     targets_orig = np.exp(targets)
@@ -60,4 +59,5 @@ def evaluate_model(model,loader,device,return_pred=False):
     if return_pred:
         return mae, rmse, r2, mre, rmre, preds_orig, targets_orig
     else:
+
         return mae, rmse, r2, mre, rmre
