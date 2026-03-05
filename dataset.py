@@ -19,7 +19,7 @@ class LifeDataset(Dataset):
     - 类别特征编码为整数索引
     - 连续特征标准化（Z-score）
     - 空间坐标保留为浮点数
-    - 目标值取自然对数（可选）
+    - 目标值取自然对数
     """
     def __init__(self, data_file, cont_cols, cat_cols, trunk_cols, target_col,
                  log_target=True, scaler_cont=None, fit_scaler=True):
@@ -30,7 +30,7 @@ class LifeDataset(Dataset):
             cat_cols (list): 类别特征列名列表
             trunk_cols (list): 主干网络输入（空间坐标）列名列表
             target_col (str): 目标值列名
-            log_target (bool): 是否对目标值取自然对数
+            log_target (bool): 对目标值取自然对数
             scaler_cont (StandardScaler or None): 预先定义的连续特征标准化器
             fit_scaler (bool): 是否拟合标准化器（训练集为True，测试集为False）
         """
@@ -246,5 +246,6 @@ def get_dataloaders(data_file, batch_size=16, train_ratio=0.8, random_seed=42, u
 
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
 
     return train_loader, test_loader, scaler_cont, cat_encoders
