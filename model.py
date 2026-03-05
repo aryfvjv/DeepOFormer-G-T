@@ -4,7 +4,7 @@
 # @author:20402
 # @date:2026/3/4
 # @version:1.0
-# @desc:
+# @desc:deepOFormer-G/T模型
 
 import torch
 import torch.nn as nn
@@ -18,8 +18,8 @@ class DeepOFormerGT(nn.Module):
     输出：b与t的点积 + 偏置
     """
     def __init__(self,
-                 cont_features,              # 连续特征名称列表（仅用于确定数量）
-                 cat_features,                # 类别特征名称列表（仅用于确定数量）
+                 cont_features,              # 连续特征名称列表
+                 cat_features,                # 类别特征名称列表
                  cat_cardinalities,           # 每个类别特征的类别数列表
                  d_model=64,                  # Transformer嵌入维度
                  nhead=4,                     # 注意力头数
@@ -121,5 +121,6 @@ class DeepOFormerGT(nn.Module):
         out = (b * t).sum(dim=-1, keepdim=True)
         if self.bias is not None:
             out = out + self.bias
+
 
         return out
